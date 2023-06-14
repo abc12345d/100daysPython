@@ -24,8 +24,8 @@ def is_night():
 
     current_hour = datetime.now().time().hour
 
-    # if current_hour < sunrise_hour or current_hour > sunset_hour:
-    if sunrise_hour <= current_hour <= sunset_hour:
+    if current_hour < sunrise_hour or current_hour > sunset_hour:
+    # if sunrise_hour <= current_hour <= sunset_hour:
          return True
 
 def is_iss_overhead():
@@ -42,13 +42,13 @@ def send_email():
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
         connection.login(user= MY_EMAIL, password= PASSWORD)
-        connection.send_message(
-            msg="Subject: Look at the sky!\n\nInternational Space Station(ISS) is close to your position now.",
+        connection.sendmail(
+            msg="Subject:Look at the sky!\n\nInternational Space Station(ISS) is close to your position now.",
             from_addr= MY_EMAIL,
             to_addrs = MY_EMAIL
         )
 
 while True:
-    time.sleep(300)
-    if is_night() and is_iss_overhead():
+    time.sleep(60)
+    if is_night and is_iss_overhead():
         send_email()
